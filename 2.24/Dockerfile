@@ -1,7 +1,7 @@
 ARG TOMCAT_VERSION="9-jre11"
 
 FROM docker.io/tomcat:$TOMCAT_VERSION
-LABEL maintainer "Mikko Rauhala <mikko@meteo.fi>"
+LABEL maintainer "Ashley Felton <ashley@ropable.com>"
 
 ARG GEOSERVER_VERSION="2.24.1"
 ARG GEOSERVER_DATA_DIR="/data/geoserver"
@@ -52,11 +52,11 @@ RUN <<EOT bash
     rm -rf $CATALINA_HOME/webapps/geoserver/data/workspaces/{tiger,nurc,sf,topp,cite,sde}
     rm -rf $CATALINA_HOME/webapps/geoserver/data/data/{nyc,sf,shapefiles,taz_shapes}
     rm -rf $CATALINA_HOME/webapps/geoserver/data/{layergroups,coverages}/*
-    rm -rf $CATALINA_HOME/webapps/geoserver/data/styles/tiger_* 
+    rm -rf $CATALINA_HOME/webapps/geoserver/data/styles/tiger_*
     mkdir -p $GEOSERVER_DATA_DIR $GEOWEBCACHE_CACHE_DIR
     mv $CATALINA_HOME/webapps/geoserver/data/* $GEOSERVER_DATA_DIR
     sed -e 's/>PARTIAL-BUFFER2</>SPEED</g' -i $CATALINA_HOME/webapps/geoserver/WEB-INF/web.xml
-    chgrp -R 0 $CATALINA_HOME $GEOWEBCACHE_CACHE_DIR $GEOSERVER_DATA_DIR 
+    chgrp -R 0 $CATALINA_HOME $GEOWEBCACHE_CACHE_DIR $GEOSERVER_DATA_DIR
     chmod -R g=u $CATALINA_HOME $GEOWEBCACHE_CACHE_DIR $GEOSERVER_DATA_DIR
 EOT
 
@@ -102,8 +102,8 @@ EOT
 COPY docker-entrypoint.sh first-run-config.sh /
 
 ### Containers should NOT run as root as a good practice
-USER 101010
+RUN useradd --no-create-home --no-log-init --uid 10001 --gid 0 geoserver
+USER 10001
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
 CMD ["geoserver"]
-
