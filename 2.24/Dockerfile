@@ -3,9 +3,9 @@ ARG TOMCAT_VERSION="9-jre11"
 FROM docker.io/tomcat:$TOMCAT_VERSION
 LABEL maintainer "Ashley Felton <ashley@ropable.com>"
 
-ARG GEOSERVER_VERSION="2.24.1"
+ARG GEOSERVER_VERSION="2.24.2"
 ARG GEOSERVER_DATA_DIR="/data/geoserver"
-ARG GEOSERVER_PLUGINS="css grib netcdf pyramid vectortiles wps ysld"
+ARG GEOSERVER_PLUGINS="css geopkg-output pyramid vectortiles wps ysld"
 ARG GEOSERVER_FONTS="Lato Noto%20Sans Open%20Sans Poppins Roboto Ubuntu"
 
 ENV GEOSERVER_FONTS=${GEOSERVER_FONTS} \
@@ -15,8 +15,6 @@ ENV GEOSERVER_FONTS=${GEOSERVER_FONTS} \
     GEOSERVER_NODE_OPTS='id:$host_name' \
     GEOWEBCACHE_CACHE_DIR='/data/gwc' \
     UMASK=002
-
-#    JAVA_OPTS="-Xms128m -XX:SoftRefLRUPolicyMSPerMB=36000 -XX:+UseG1GC" \
 
 # see https://docs.geoserver.org/stable/en/user/production/container.html
 ENV CATALINA_OPTS="-Xms256m -Xmx2g \
