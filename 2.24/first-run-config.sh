@@ -1,8 +1,8 @@
 #/bin/sh
 
-if [ -z "$1" ]; then 
+if [ -z "$1" ]; then
     REST=http://localhost:8080/geoserver/rest
-else 
+else
     REST=$1
 fi
 
@@ -27,11 +27,11 @@ done
 if [ -n "$GEOSERVER_ADMIN_PASSWORD" ]; then
     curl -H "Authorization: basic YWRtaW46Z2Vvc2VydmVy" -X PUT http://localhost:8080/geoserver/rest/security/self/password -H  "accept: application/json" -H  "content-type: application/json" -d "{  \"newPassword\": \"$GEOSERVER_ADMIN_PASSWORD\"}"
     cat << EOF
-    
+
     ############################################################################
-    
+
      Login with credentials: $GEOSERVER_ADMIN_USER / $GEOSERVER_ADMIN_PASSWORD
-    
+
     ############################################################################
 
 EOF
@@ -40,12 +40,12 @@ EOF
 fi
 
 
-if [ -n "$GEOSERVER_PROXY_BASE_URL" ]; then   
+if [ -n "$GEOSERVER_PROXY_BASE_URL" ]; then
     api PUT  /settings "<global><settings><proxyBaseUrl>$GEOSERVER_PROXY_BASE_URL</proxyBaseUrl></settings></global>"
 fi
 
-if [ -n "$GEOSERVER_WMS_TITLE" ]; then   
-    api PUT  /services/wms/settings "<wms><title>$GEOSERVER_WMS_TITLE</title><abstrct>$GEOSERVER_WMS_ABSTRACT</abstrct></wms>"
+if [ -n "$GEOSERVER_WMS_TITLE" ]; then
+    api PUT  /services/wms/settings "<wms><title>$GEOSERVER_WMS_TITLE</title><abstract>$GEOSERVER_WMS_ABSTRACT</abstract></wms>"
 fi
 
 if [ -n "$GEOSERVER_WORKSPACE" ]; then
